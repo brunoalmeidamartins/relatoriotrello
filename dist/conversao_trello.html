@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Conversor Trello - ESPAÇO CONAFER</title>
+        <link href="css/styles.css" rel="stylesheet" />
+        <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+    </head>
+    <body class="sb-nav-fixed">
+
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <a class="navbar-brand" href="index.html">ADM ESPAÇO CONAFER</a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
+            <ul class="navbar-nav d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i> Administrador</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="#">Meu Perfil</a><a class="dropdown-item" href="#">Log de Ações</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="login.html">Sair</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Principal</div>
+                                <a class="nav-link collapsed" href="index.html">
+                                    <div class="sb-nav-link-icon">
+                                        <i class="fas fa-users-cog"></i>
+                                    </div>
+                                    Dashboard
+                                </a>
+                            <div class="sb-sidenav-menu-heading">Relatórios</div>
+                                <a class="nav-link" href="conversao_trello.html">
+                                    <div class="sb-nav-link-icon">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </div>
+                                    Conversor Trello
+                                </a>
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logado como:</div>
+                        Administrador
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+
+                        <h1 class="mt-4">Conversor Trello</h1>
+
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Relatórios -> Conversor Trello</li>
+                        </ol>
+
+                        <div class="row">
+
+                            <div class="col-xl-4 col-md-6" id="selecione">
+                                <div class="card mb-4">
+                                    <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Selecione o relatório JSON exportado do Trello:</div>
+                                    <div class="card-body">
+                                    <form>
+                                      <div class="form-group">
+                                        <input type="file" class="form-control-file" id="jsonfile" name="jsonfile" autocomplete="off">
+                                      </div>
+                                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Iniciar Conversão</button>
+                                    </form>
+                                    </div>
+                                </div>
+                               
+                            </div>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Configurando Relatório</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body member_etiqueta_association">
+                                    
+                                   
+                                  </div>
+                                  <div class="modal-body date_interval">
+                                    
+                                   
+                                    </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-primary" onClick="configMember()">Gerar Relatório</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                        </div>
+                         <div class='card mb-12 card_principal' id='card_principal'></div>
+                        <iframe id='iframe' height="595.28" src="about:blank" width="841.89" >
+                          
+                        </iframe> 
+                        <button type='button' class='btn btn-primary' onClick='getPDF()'>Baixar PDF</button>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; ADM ESPAÇO CONAFER 2020</div>
+                            <div>
+                                <a href="#">Desenvolvedores &amp; Documentação</a>
+                                &middot;
+                                <a href="#">Política de Privacidade</a>
+                                &middot;
+                                <a href="#">Termos &amp; Condições</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <script>
+            var membros_acoes_geral = [];
+            function shadeColor(color, percent) {
+
+                var R = parseInt(color.substring(1,3),16);
+                var G = parseInt(color.substring(3,5),16);
+                var B = parseInt(color.substring(5,7),16);
+
+                R = parseInt(R * (100 + percent) / 100);
+                G = parseInt(G * (100 + percent) / 100);
+                B = parseInt(B * (100 + percent) / 100);
+
+                R = (R<255)?R:255;  
+                G = (G<255)?G:255;  
+                B = (B<255)?B:255;  
+
+                var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
+                var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
+                var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
+
+                return "#"+RR+GG+BB;
+            }
+
+            function populateHtmlReport(filteredActivities,startDate,endDate){
+
+                var startDate_ = startDate.split("-");
+                
+                var endDate_ = endDate.split("-");
+
+                var cabecalho = $("<div class='row'></div>");
+                var cabecalho_titulo = $("<h6 style='margin-left: 10px;'>RELATÓRIO ESPAÇO CONAFER RORAIMA ["+startDate_[2]+"/"+startDate_[1]+"/"+startDate_[0]+" - "+endDate_[2]+"/"+endDate_[1]+"/"+endDate_[0]+"]</h6>");
+                var membros = $("<div class='row'></div>");
+                $(cabecalho).append(cabecalho_titulo);
+
+                var script_jquery = '<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"><';
+
+                script_jquery += '/script>';
+
+                var script_ = '<script> function deleteThisAction(column,member,card,action){ document.getElementById("column_"+column+"_member_"+member+"_card_"+card+"_action_"+action).parentElement.replaceWith("");}';
+
+                script_ += 'function deleteThisChecklist(column,member,card,checklist){ document.getElementById("column_"+column+"_member_"+member+"_card_"+card+"_checklist_"+checklist).parentElement.parentElement.parentElement.parentElement.replaceWith("");}';
+
+                script_ += 'function deleteThisAttachments (column,member,card){document.getElementById("column_"+column+"_member_"+member+"_card_"+card+"_attachments").parentElement.parentElement.replaceWith("");}';
+
+                script_ += 'function deleteThisAttachment (column,member,card,anexo){document.getElementById("column_"+column+"_member_"+member+"_card_"+card+"_anexo_"+anexo).parentElement.replaceWith("");}';
+
+                script_ += 'function deleteThisChecklistItem(column,member,card,checklist,item){ document.getElementById("column_"+column+"_member_"+member+"_card_"+card+"_checklist_"+checklist+"_item_"+item).parentElement.parentElement.replaceWith("");}';
+                
+                script_ += 'function deleteThisCard(column,member,card){document.getElementById("column_"+column+"_atv_member_"+member+"_card_"+card).parentElement.parentElement.replaceWith("");}';
+
+                script_ += 'function deleteThisDescription(column,member,card){document.getElementById("column_"+column+"_member_"+member+"_card_"+card+"_descrition").parentElement.replaceWith("");}';
+
+                script_ += 'function deleteThisColumn(column,member){document.getElementById("column_"+column+"_member_"+member).parentElement.parentElement.replaceWith("");}<';
+
+
+                script_ += '/script>';
+                
+                var i=0;             
+                
+                for (i=0;i<filteredActivities.length;i++){
+                    if (filteredActivities[i].cards_em_demandas.length+filteredActivities[i].cards_em_andamento.length+filteredActivities[i].cards_concluidos.length+filteredActivities[i].cards_caixa_de_gelo.length+filteredActivities[i].cards_aguardando_resp.length!=0){
+                        var membro_completo = $("<div class='col-md-12' style='margin-bottom:15px;'></div>");
+                        var membro = $("<div class='row'></div>");
+                        var membro_listra = $("<div class='col-md-1' style='background-color: "+filteredActivities[i].color+";'></div>");
+                        var membro_corpo = $("<div class='col-md-11'></div>");
+                        var membro_corpo_titulo = $("<div style='background-color: "+filteredActivities[i].color+"; margin-left: -12px;padding-left: 25px;color:white'><b>"+filteredActivities[i].membro_nome_real+" - "+filteredActivities[i].cargo+"</b></div>");
+                        var membro_corpo_colunas = $("<div id=''></div>");
+                       
+                        var m=0;
+
+                        populateColumn(i,filteredActivities[i].cards_em_demandas,"DEMANDAS",membro_corpo_colunas,filteredActivities[i].color)
+                        populateColumn(i,filteredActivities[i].cards_em_andamento,"EM ANDAMENTO",membro_corpo_colunas,filteredActivities[i].color)
+                        populateColumn(i,filteredActivities[i].cards_concluidos,"CONCLUIDOS",membro_corpo_colunas,filteredActivities[i].color)
+                        populateColumn(i,filteredActivities[i].cards_voluntarios,"Voluntariado e Prestação de Serviços",membro_corpo_colunas,filteredActivities[i].color)
+                        populateColumn(i,filteredActivities[i].cards_caixa_de_gelo,"CAIXA DE GELO",membro_corpo_colunas,filteredActivities[i].color)
+                        populateColumn(i,filteredActivities[i].cards_aguardando_resp,"AGUARDANDO RESPOSTA",membro_corpo_colunas,filteredActivities[i].color)
+                        populateColumn(i,filteredActivities[i].cards_agendados,"Agendados",membro_corpo_colunas,filteredActivities[i].color)
+                        
+
+                        $(membro_corpo).append(membro_corpo_titulo);
+                        $(membro_corpo).append(membro_corpo_colunas);
+
+                        $(membro).append(membro_listra);
+                        $(membro).append(membro_corpo);
+                        
+                        $(membro_completo).append(membro);
+
+                        $(membros).append(membro_completo);
+                    }
+                }
+
+                
+
+
+                $("#card_principal").append(cabecalho);
+                $("#card_principal").append(membros);
+                var $iframe = $('#iframe');
+                var cssLink = document.createElement("link");
+                cssLink.href = "css/styles.css"; 
+                cssLink.rel = "stylesheet"; 
+                cssLink.type = "text/css"; 
+
+                $iframe.contents().find("head").append(cssLink);
+                $iframe.contents().find("head").append(script_jquery);
+
+                $iframe.contents().find("body").append($('#card_principal'));
+
+                $iframe.contents().find("body").append(script_);
+
+        }
+
+        function populateColumn(i,cards,column,membro_corpo_colunas,color){
+            if (cards.length>0){
+              //  $(div_card_member_body).append("<div>"+column+"</div>");
+               
+                var column_id = 0;
+                var column_color;
+                
+                switch(column){
+                    case "DEMANDAS":
+                    column_id = 1;
+                    column_color = "#ffffff";
+                    break;
+                    case "EM ANDAMENTO":
+                    column_id = 2;
+                    column_color = "#f2f2f2";
+                    break;
+                    case "CONCLUIDOS":
+                    column_id = 3;
+                    column_color = "#e6e6e6";
+                    break;
+                    case "Voluntariado e Prestadores de Serviços":
+                    column_id = 4;
+                    column_color = "#d9d9d9";
+                    case "CAIXA DE GELO":
+                    column_id = 5;
+                    column_color = "#cccccc";
+                    break;
+                    case "AGUARDANDO RESPOSTA":
+                    column_id = 6;
+                    column_color = "#bfbfbf";
+                    case "Agendados":
+                    column_id = 7;
+                    column_color = "#b3b3b3";
+                    break;
+                }
+
+                var membro_corpo_coluna = $("<div class='my-1 p-1 rounded box-shadow' id=''></div>");
+                var membro_corpo_coluna_titulo = $("<h6 class='pb-2 mb-0' style='background-color: dimgrey; color:white;text-align:left;padding-left: 10px;'><button id='column_"+column_id+"_member_"+i+"' onClick='deleteThisColumn("+column_id+","+i+")' class='btn btn-danger btn-sm x_button'>x</button>"+column+"</h6>");
+                var membro_corpo_coluna_corpo = $("<div id=''></div>");
+                 
+                       
+                for(m=cards.length-1;m>=0;m--){
+                        var membro_corpo_coluna_corpo_atividade = $("<div class='border-bottom border-gray' style='padding-bottom: 10px;'></div>");
+                        var membro_corpo_coluna_corpo_atividade_titulo = $("<div class='media text-muted pt-3'></div>");
+
+                        var createDate = cards[m].actions[0].date.split("T");
+
+                        var createDate_formated = createDate[0].split("-");
+
+                        let description = "";
+
+                        if (cards[m].description!=""){
+                            description = "<span><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_descrition' onClick='deleteThisDescription("+column_id+","+i+","+m+")' class='btn btn-danger btn-sm x_button'>x</button>"+cards[m].description+"</span>";
+                        }
+
+                        var membro_corpo_coluna_corpo_atividade_titulo_titulo = $("<button id='column_"+column_id+"_atv_member_"+i+"_card_"+m+"' onClick='deleteThisCard("+column_id+","+i+","+m+")' class='btn btn-danger btn-sm x_button'>x</button><p class='media-body pb-3 mb-0 small lh-125'><strong class='d-block' style='color:dimgrey;font-size: 16px;'>"+cards[m].name+" [Início em "+createDate_formated[2]+"/"+createDate_formated[1]+"/"+createDate_formated[0]+"]</strong>"+description+"</p>");
+                                
+                        $(membro_corpo_coluna_corpo_atividade_titulo).append(membro_corpo_coluna_corpo_atividade_titulo_titulo);
+                        $(membro_corpo_coluna_corpo_atividade).append(membro_corpo_coluna_corpo_atividade_titulo);
+
+                        var membro_corpo_coluna_corpo_atividade_roteiro = $("<ul class='events media-body small lh-125' style='margin-top: 8px;margin-bottom:0px;'></ul>");
+                                       
+                        for (r=0;r<cards[m].actions.length;r++){
+                            switch(cards[m].actions[r].type){
+                              
+                                case "commentCard":
+                                
+                                var membro_corpo_coluna_corpo_atividade_roteiro_item = $("<li id='member_"+i+"_card_"+m+"_action_"+r+"'><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_action_"+r+"' onClick='deleteThisAction("+column_id+","+i+","+m+","+r+")' class='btn btn-danger btn-sm x_button'>x</button></li>");
+
+                                var formatDate = cards[m].actions[r].date.split("T");
+                                var formatDate_ = formatDate[0].split("-");
+
+                                var membro_corpo_coluna_corpo_atividade_roteiro_item_time = $("<time datetime='' style='color:#787878'>"+formatDate_[2]+"/"+formatDate_[1]+"/"+formatDate_[0]+"</time>");
+                                var membro_corpo_coluna_corpo_atividade_roteiro_item_span = $("<span  style='color:gray'>"+cards[m].actions[r].text+"</span>");
+                                
+                                $(membro_corpo_coluna_corpo_atividade_roteiro_item).append(membro_corpo_coluna_corpo_atividade_roteiro_item_time);
+
+                                $(membro_corpo_coluna_corpo_atividade_roteiro_item).append(membro_corpo_coluna_corpo_atividade_roteiro_item_span);
+
+                                $(membro_corpo_coluna_corpo_atividade_roteiro).append(membro_corpo_coluna_corpo_atividade_roteiro_item);
+                                break;
+                            }
+                        }
+
+                        $(membro_corpo_coluna_corpo_atividade).append(membro_corpo_coluna_corpo_atividade_roteiro);
+
+                        var membro_corpo_coluna_corpo_atividade_outros = $("<div class='row'></div>");
+                        
+                        if(cards[m].checklists.length>0){
+                            var membro_corpo_coluna_corpo_atividade_checklists = $("<div class='col-md-7'></div>");
+        
+                            for (r=0;r<cards[m].checklists.length;r++){
+                                var membro_corpo_coluna_corpo_atividade_checklist = $("<ul class='events media-body small lh-125' style='margin-top: 8px;margin-bottom:0px;'></ul>");
+                                var membro_corpo_coluna_corpo_atividade_checklist_titulo = $("<li id='member_"+i+"_card_"+m+"_action_"+r+"'><b style='color:dimgrey'><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_checklist_"+r+"' onClick='deleteThisChecklist("+column_id+","+i+","+m+","+r+")' class='btn btn-danger btn-sm x_button'>x</button>> "+cards[m].checklists[r].name+"</b></li>");
+
+                                $(membro_corpo_coluna_corpo_atividade_checklist).append(membro_corpo_coluna_corpo_atividade_checklist_titulo);
+
+                                var n=0;
+                                
+                                for (n=0;n<cards[m].checklists[r].items.length;n++){
+                                    var membro_corpo_coluna_corpo_atividade_checklist_item = $("<li id='member_"+i+"_card_"+m+"_action_"+r+"'></li>");
+                                    var membro_corpo_coluna_corpo_atividade_checklist_item_div = $("<div id='item__membro_"+i+"_atividade_"+m+"_checklist_"+r+"_item_"+n+"' class='custom-control custom-checkbox'><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_checklist_"+r+"_item_"+n+"' onClick='deleteThisChecklistItem("+column_id+","+i+","+m+","+r+","+n+")' class='btn btn-danger btn-sm x_button'>x</button></div>");
+                                   
+                                    var membro_corpo_coluna_corpo_atividade_checklist_item_div_input;
+
+                                    if(cards[m].checklists[r].items[n].status == "incomplete"){
+                                        membro_corpo_coluna_corpo_atividade_checklist_item_div_input = $("<input type='checkbox' class='custom-control-input' id='input__membro_"+i+"_atividade_"+m+"_checklist_"+r+"_item_"+n+"' disabled>");
+                                    } else {
+                                        membro_corpo_coluna_corpo_atividade_checklist_item_div_input = $("<input type='checkbox' class='custom-control-input' id='input__membro_"+i+"_atividade_"+m+"_checklist_"+r+"_item_"+n+"' checked disabled>");
+                                    }
+                                    var membro_corpo_coluna_corpo_atividade_checklist_item_div_label = $("<label class='custom-control-label' style='width:440px;font-size:10px;'  id='membro_"+i+"_atividade_"+m+"_checklist_"+r+"_item_"+n+"' for='input__membro_"+i+"_atividade_"+m+"_checklist_"+r+"_item_"+n+"'>"+cards[m].checklists[r].items[n].name+"</label>");
+                                    
+                                    $(membro_corpo_coluna_corpo_atividade_checklist_item_div).append(membro_corpo_coluna_corpo_atividade_checklist_item_div_input);
+                                    $(membro_corpo_coluna_corpo_atividade_checklist_item_div).append(membro_corpo_coluna_corpo_atividade_checklist_item_div_label);
+                                    
+                                    $(membro_corpo_coluna_corpo_atividade_checklist_item).append(membro_corpo_coluna_corpo_atividade_checklist_item_div);
+                                    $(membro_corpo_coluna_corpo_atividade_checklist).append(membro_corpo_coluna_corpo_atividade_checklist_item);
+                                }
+
+                                $(membro_corpo_coluna_corpo_atividade_checklists).append(membro_corpo_coluna_corpo_atividade_checklist);
+                            }
+
+                            $(membro_corpo_coluna_corpo_atividade_outros).append(membro_corpo_coluna_corpo_atividade_checklists);
+                            
+                        }
+        
+        
+                        if(cards[m].attachments.length>0){
+                            var membro_corpo_coluna_corpo_atividade_anexos = $("<div class='col-md-4'></div>");
+        
+                            var membro_corpo_coluna_corpo_atividade_anexo = $("<ul class='events media-body small lh-125' style='margin-top: 8px;margin-bottom:0px;'></ul>");
+                            var membro_corpo_coluna_corpo_atividade_anexo_titulo = $("<li id='member_"+i+"_card_"+m+"_action_"+r+"'><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_attachments' onClick='deleteThisAttachments("+column_id+","+i+","+m+")' class='btn btn-danger btn-sm x_button'>x</button><b style='color:dimgrey'>> Anexos</b></li>");
+
+                            $(membro_corpo_coluna_corpo_atividade_anexo).append(membro_corpo_coluna_corpo_atividade_anexo_titulo);
+                               
+                            for (r=0;r<cards[m].attachments.length;r++){
+                                var membro_corpo_coluna_corpo_atividade_anexo_item = $("<li id='member_"+i+"_card_"+m+"_action_"+r+"' style='display: block'><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_anexo_"+r+"' onClick='deleteThisAttachment("+column_id+","+i+","+m+","+r+")' class='btn btn-danger btn-sm x_button'>x</button><a href='#"+cards[m].attachments[r].url+"'>"+cards[m].attachments[r].url+"</a></li>");
+                            
+                                $(membro_corpo_coluna_corpo_atividade_anexo).append(membro_corpo_coluna_corpo_atividade_anexo_item);
+
+                                $(membro_corpo_coluna_corpo_atividade_anexos).append(membro_corpo_coluna_corpo_atividade_anexo);
+                            }
+                            
+                            $(membro_corpo_coluna_corpo_atividade_outros).append(membro_corpo_coluna_corpo_atividade_anexos);
+                        }
+
+                        $(membro_corpo_coluna_corpo_atividade).append(membro_corpo_coluna_corpo_atividade_outros);
+                        
+                        $(membro_corpo_coluna_corpo).append(membro_corpo_coluna_corpo_atividade);
+        
+        
+                      //  if (cards[m].description!=""){
+                      //  }
+                      
+                    }
+
+                $(membro_corpo_coluna).append(membro_corpo_coluna_titulo);
+                $(membro_corpo_coluna).append(membro_corpo_coluna_corpo);
+                
+                $(membro_corpo_colunas).append(membro_corpo_coluna);
+
+            }   
+        }
+           
+           function getPDF(){
+                $(".x_button").replaceWith(function() { return null; });
+
+                $("#iframe").contents().find(".x_button").replaceWith(function(){ return null;});
+                    
+                $("#iframe").get(0).contentWindow.print();
+        
+            }
+
+            function configMember(){
+                var z,x,n;
+
+                var filteredActivities = [];
+                
+                var startDate = document.getElementById("date_interval_init").value;
+                var endDate = document.getElementById("date_interval_end").value;
+
+            //    alert(startDate+"\n"+endDate);
+
+                for(z=0;z<membros_acoes_geral.length;z++){
+
+                    let membro =  {
+                                membro_nome: null,
+                                cards_em_demandas: [],
+                                cards_em_andamento: [] ,
+                                cards_concluidos: [],
+                                cards_caixa_de_gelo: [],
+                                cards_aguardando_resp: [],
+                                cards_arquivados: [],
+                                cards_agendados: [],
+                                cards_voluntarios: [],
+                                cargo: null,
+                                membro_nome_real: "",
+                                color: null
+                            };
+
+                    membros_acoes_geral[z].membro_nome_real = document.getElementById("membro_nome_real_"+z).value;
+                    membro.membro_nome_real = membros_acoes_geral[z].membro_nome_real;
+                    membros_acoes_geral[z].cargo = document.getElementById("cargo_"+z).value;
+                    membro.cargo = membros_acoes_geral[z].cargo;
+                    membros_acoes_geral[z].color = document.getElementById("color_"+z).value;
+                    membro.color = membros_acoes_geral[z].color;
+
+                    for (x=0;x<membros_acoes_geral[z].cards.length;x++){
+                        
+                        let status = "";
+                        for (n=0;n<membros_acoes_geral[z].cards[x].actions.length;n++){
+                            if(membros_acoes_geral[z].cards[x].actions[n].currentList!=""){
+                                status = membros_acoes_geral[z].cards[x].actions[n].currentList;
+                            }
+                            //alert("membro: "+z+"cartão n°: "+x+"\nacao n°: "+n+"status: "+status);
+                            //pega a ultima ação do cards e verifica qual era o ultimo status do card
+                            //e se o card está no intervalo de data
+                            if (n==membros_acoes_geral[z].cards[x].actions.length-1){
+                                let dateCard = membros_acoes_geral[z].cards[x].actions[n].date.split("T")[0];
+                                if ((dateCard>=startDate)&&(dateCard<=endDate)){
+                                    alert(status);
+                                  switch(status){
+                                        case "Voluntariado e Prestação de Serviços":
+                                            if (membro.cards_voluntarios.indexOf(membros_acoes_geral[z].cards[x])==-1){
+                                                membro.cards_voluntarios.push(membros_acoes_geral[z].cards[x]);
+                                            }
+                                            break;
+                                        case "Agendados":
+                                            if (membro.cards_agendados.indexOf(membros_acoes_geral[z].cards[x])==-1){
+                                                membro.cards_agendados.push(membros_acoes_geral[z].cards[x]);
+                                            }
+                                            break;
+                                        case "DEMANDAS":
+                                            if (membro.cards_em_demandas.indexOf(membros_acoes_geral[z].cards[x])==-1){
+                                                membro.cards_em_demandas.push(membros_acoes_geral[z].cards[x]);
+                                            }
+                                            break;
+                                        case "Caixa de Gelo":
+                                            if (membro.cards_caixa_de_gelo.indexOf(membros_acoes_geral[z].cards[x])==-1){
+                                                membro.cards_caixa_de_gelo.push(membros_acoes_geral[z].cards[x]);
+                                            }
+                                            break;
+                                        case "EM ANDAMENTO":
+                                            if (membro.cards_em_andamento.indexOf(membros_acoes_geral[z].cards[x])==-1){
+                                                membro.cards_em_andamento.push(membros_acoes_geral[z].cards[x]);
+                                            }
+                                            break;
+                                        case "Aguardando Resposta":
+                                            if (membro.cards_aguardando_resp.indexOf(membros_acoes_geral[z].cards[x])==-1){
+                                                membro.cards_aguardando_resp.push(membros_acoes_geral[z].cards[x]);
+                                            }
+                                            break;
+                                        case "CONCLUÍDO":
+                                            if (membro.cards_concluidos.indexOf(membros_acoes_geral[z].cards[x])==-1){
+                                                membro.cards_concluidos.push(membros_acoes_geral[z].cards[x]);
+                                            }
+                                            break;
+                                        default:
+                                        
+                                    }
+                                }
+                            }
+                        
+                        }
+                    }
+                    filteredActivities.push(membro);
+                }
+
+                populateHtmlReport(filteredActivities,startDate,endDate);
+
+            }
+
+            (function() {
+
+                //essa função detecta que foi colocado algum arquivo no input de arquivo de id "jsonfile"
+                function onChange(event) {
+                    var reader = new FileReader();
+                    reader.onload = onReaderLoad;
+                    reader.readAsText(event.target.files[0]);
+                }
+
+                /*
+                    essa função lê o arquivo que foi colocado no input de arquivo de id "jsonfile" e gera um objeto
+                    chamado "membros_acoes_geral" que possui todos os membros cada qual com seus cartões
+
+                    estrutura lógica:
+                    [
+                        membro: {
+                            membro_nome_real: "",
+                            cargo: "",
+                            color: "",
+                            cards: {
+                                card: {
+                                    checklists: [
+                                        checklist: {
+                                            name: "",
+                                            items: [
+                                                item: {
+                                                    name: "",
+                                                    status: ""
+                                                },
+                                                ...
+                                            ]
+                                        },
+                                        ...
+                                    ],
+                                    comments: [
+                                        comment: {
+
+                                        },
+                                        ...
+                                    ],
+                                    date: "",
+                                    actions: [
+                                        action: {
+                                            type: "",
+                                            name: "",
+                                            date: "",
+                                            currentList: ""
+                                        },
+                                        ...
+                                    ],
+                                    name: "",
+                                    createdAt: "",
+                                    description: "",
+                                    attachments: []
+                                },
+                            }
+                        },
+                        ...
+                    ]
+
+                */
+                function onReaderLoad(event){
+                    $(".member_etiqueta_association").empty();
+
+                    console.log(event.target.result);
+                    var obj = JSON.parse(event.target.result);
+
+                    var i;
+                    
+                    var membros = obj.members;
+                    var membro = {
+                        name: "",
+                        id: ""
+                    }
+
+                    var etiquetas = obj.labels;
+
+                    var cards = obj.cards;   
+                    var checklists = obj.checklists;
+                    var actions = obj.actions;  
+
+                    var e;
+                    for (e=0;e<etiquetas.length;e++){
+
+                       var membro_acoes = {
+                                membro_nome: null,
+                                cards: [] ,
+                                cargo: null,
+                                membro_nome_real: "",
+                                color: null
+                            };
+
+                        if (etiquetas[e].name!=""){
+                            
+                         //alert(etiquetas[e].name);
+                            membro_acoes.membro_nome = etiquetas[e].name;
+
+                                 for(i=0;i<cards.length;i++){
+
+                                    var m = 0;
+                                    for (m=0;m<cards[i].labels.length;m++){
+
+                                        if (cards[i].labels[m].name==etiquetas[e].name) {
+
+                                            var card = {
+                                                checklists: [],
+                                                comments: [],
+                                                date: "",
+                                                actions: [],
+                                                name: "",
+                                                createdAt: "",
+                                                description: "",
+                                                attachments: []
+                                            };
+
+                                            card.name = cards[i].name;
+                                            card.description = cards[i].desc;
+
+                                            var z;
+                                            var checklists_from_card = [];
+
+                                            for (z=0;z<cards[i].attachments.length;z++){
+                                                if (cards[i].attachments[z].isUpload==false){
+                                                    card.attachments.push(cards[i].attachments[z]);
+                                                  //  alert(cards[i].attachments[z].url);
+                                                }
+                                            }
+
+                                            for (z=0;z<checklists.length;z++){
+                                                if (checklists[z].idCard==cards[i].id){
+
+                                                   // alert("tem checklist");
+                                                    checklists_from_card.push(checklists[z]);
+                                                }
+                                            }
+
+                                            var checklist_items_string = "";
+
+                                            for (z=0;z<checklists_from_card.length;z++){
+
+                                                var checklist = {
+                                                    name: "",
+                                                    items: []
+                                                };
+
+                                                
+
+                                                checklist_items_string+="\n"+checklists_from_card[z].name;
+                                                checklist.name = checklists_from_card[z].name;
+                                                var checklist_items = checklists_from_card[z].checkItems; 
+                                                var cont;
+                                                for (cont=0;cont<checklist_items.length;cont++){
+                                                    var items = {
+                                                    name: "",
+                                                    status: ""
+                                                };
+                                                    items.name = checklist_items[cont].name;
+                                                    items.status = checklist_items[cont].state;
+                                                    checklist_items_string+="\nitem "+cont+":";
+                                                    checklist_items_string+="\n'-name: "+checklist_items[cont].name;
+                                                    checklist_items_string+="\n'-status: "+checklist_items[cont].state;
+                                                    checklist.items.push(items);
+                                                }
+
+                                                 card.checklists.push(checklist);
+                                            }
+
+                                            var actions_route = "\nROTA DA ATIVIDADE";
+                                            
+                                            var current_list = "";
+                                            
+                                            var l = 0;
+
+
+                                            for (z=actions.length-1;z>=0;z--){
+                                                if(actions[z].data.card != null){
+                                                    var action = {
+                                                        date: "",
+                                                        text: "",
+                                                        type: "",
+                                                        currentList: ""
+                                                    }
+
+                                                    if (actions[z].data.card.id.trim()==cards[i].id.trim()){
+                                                        switch(actions[z].type){
+                                                            case "createCard":
+                                                                actions_route += "\natividade criada em "+actions[z].date;
+                                                                actions_route += "\n------------";
+                                                                action.date = actions[z].date;
+                                                                action.text = "Foi criada";
+                                                                action.type = "createCard";
+                                                                card.actions.push(action);
+                                                            break;
+                                                            case "commentCard":
+                                                                actions_route += "\n"+actions[z].idMemberCreator+" disse '"+actions[z].data.text+"' em "+actions[z].date;
+                                                                actions_route += "\n------------";
+                                                                action.date = actions[z].date;
+                                                               // var memberComment = membros_obj.find(membro => membro.id.trim() == actions[z].idMemberCreator.trim());
+                                                                action.text = "\n"+actions[z].memberCreator.fullName+" disse '"+actions[z].data.text+"'";
+                                                                action.type = "commentCard";
+                                                                card.actions.push(action);
+                                                            break;
+                                                            case "updateCard":
+                                                                if (actions[z].data.list != null){
+                                                                    if (current_list != actions[z].data.list.name) {
+                                                                        actions_route += "\nmudou para status "+actions[z].data.list.name+" em "+actions[z].date;
+                                                                        actions_route += "\n------------";
+                                                                        current_list = actions[z].data.list.name;
+                                                                        action.currentList = current_list;
+                                                                        action.date = actions[z].date;
+                                                                        action.type = "updateCard";
+                                                                        card.actions.push(action);
+                                                                    }
+                                                                } else {
+                                                                    if ((actions[z].data.listAfter)&&(current_list != actions[z].data.listAfter.name)){
+                                                                        actions_route += "\nmudou para status "+actions[z].data.listAfter.name+" em "+actions[z].date;
+                                                                        actions_route += "\n------------";
+                                                                        current_list = actions[z].data.listAfter.name;
+                                                                        action.date = actions[z].date;
+                                                                        action.type = "updateCard";
+                                                                        var listafter = "";
+                                                                        var listbefore = "";
+
+                                                                        switch(actions[z].data.listAfter.name){
+                                                                            case "CONCLUÍDO":
+                                                                                listafter="<p style='color:#118000;display:inline;'>"+actions[z].data.listAfter.name+"</p>";
+                                                                                break;
+                                                                            case "Caixa de Gelo":
+                                                                                listafter="<p style='color:#0080ab;display:inline;'>"+actions[z].data.listAfter.name+"</p>";
+                                                                                break;
+                                                                            default:
+                                                                                listafter=actions[z].data.listAfter.name;
+                                                                                break;
+                                                                        }
+
+                                                                        switch(actions[z].data.listBefore.name){
+                                                                            case "CONCLUÍDO":
+                                                                                listbefore="<p style='color:#118000;display:inline;'>"+actions[z].data.listBefore.name+"</p>";
+                                                                                break;
+                                                                            case "Caixa de Gelo":
+                                                                                listbefore="<p style='color:#0080ab;display:inline;'>"+actions[z].data.listBefore.name+"</p>";
+                                                                                break;
+                                                                            default:
+                                                                                listbefore=actions[z].data.listBefore.name;
+                                                                                break;
+                                                                        }
+
+                                                                        action.currentList = current_list;
+                                                                        action.text = "Atividade mudou de "+listbefore+" para "+listafter;
+                                                                        action.type = "updateCard";
+                                                                        card.actions.push(action);
+                                                                    }
+                                                                }
+                                                                
+                                                            break;
+                                                            case "addChecklistToCard":
+                                                                actions_route += "\nadicionou checklist ao cartão";
+                                                                actions_route += "\n------------";
+                                                                action.date = actions[z].date;
+                                                                action.text = "Checklist '"+actions[z].data.checklist.name+"' adicionado ao cartão";
+                                                                action.type = "addChecklistToCard";
+                                                                card.actions.push(action);
+                                                            break;
+                                                        }
+                                                       
+                                                    }
+                                                
+                                                    
+                                                }
+                                            }
+
+                                            membro_acoes.cards.push(card);
+
+                                        }//esse aqi1
+                                    }//esse aqui 2
+                                }
+
+                            membros_acoes_geral.push(membro_acoes);
+                         
+                            //membro_acoes[i]. = etiquetas[i].name;
+                        }
+                    }
+
+                    var div = $("<div></div>");
+
+                    for(var k=0;k<membros_acoes_geral.length;k++){
+                            //alert(etiquetas[k].name);      
+                                var div_input = $("<div class='input-group' style='margin-top:10px;'></div>")
+                                var input_name = $("<input type='text' id='membro_nome_real_"+k+"' class='form-control' placeholder='"+membros_acoes_geral[k].membro_nome+"'/>");
+                                var span = $("<span class='input-group-addon'>-</span>");
+                                var input_cargo = $("<input type='text' id='cargo_"+k+"' class='form-control' placeholder='Cargo'/>");
+
+                                var color_picker = $("<input type='color' style='background-color:transparent;border:0px;' class='colorpicker' id='color_"+k+"' name='favcolor' value='#ff0000'><br><br>");
+
+                                $(div_input).append(input_name);
+                                $(div_input).append(span);
+                                $(div_input).append(input_cargo);
+
+                                $(div_input).append(color_picker);
+                                $(div).append(div_input);
+                    }
+
+                    $(".member_etiqueta_association").append("<div class='form-group row'><label for='date_interval_init' class='col-2 col-form-label'>Início</label><div class='col-10'><input class='form-control' type='date' value='2020-04-01' id='date_interval_init'></div></div>");
+                    $(".member_etiqueta_association").append("<div class='form-group row'><label for='date_interval_end' class='col-2 col-form-label'>Fim</label><div class='col-10'><input class='form-control' type='date' value='2020-04-01' id='date_interval_end'></div></div>");
+
+                    $(".member_etiqueta_association").append(div);
+                 
+                    var cards_without_member = [];
+
+                    for(i=0;i<cards.length;i++){
+                                    
+                                    var m = 0;
+                                    if (cards[i].labels.length<1){
+
+                                                var card = {
+                                                    checklists: [],
+                                                    comments: [],
+                                                    date: "",
+                                                    actions: [],
+                                                    name: "",
+                                                    createdAt: "",
+                                                    description: ""
+                                                };
+
+                                                card.name = cards[i].name;
+                                                card.description = cards[i].desc;
+                                             
+                                                var z;
+                                                var checklists_from_card = [];
+
+                                                for (z=0;z<checklists.length;z++){
+                                                    if (checklists[z].idCard==cards[i].id){
+
+                                                       // alert("tem checklist");
+                                                        checklists_from_card.push(checklists[z]);
+                                                    }
+                                                }
+
+                                                var checklist_items_string = "";
+
+                                    
+
+                                                for (z=0;z<checklists_from_card.length;z++){
+
+                                                    checklist = {
+                                                        name: "",
+                                                        items: []
+                                                    };
+
+                                                    items = {
+                                                        name: "",
+                                                        status: ""
+                                                    };
+
+                                                    checklist_items_string+="\n"+checklists_from_card[z].name;
+                                                    checklist.name = checklists_from_card[z].name;
+                                                    var checklist_items = checklists_from_card[z].checkItems; 
+                                                    var n;
+                                                    for (n=0;n<checklist_items.length;n++){
+                                                        items.name = checklist_items[n].name;
+                                                        items.status = checklist_items[n].state;
+                                                        checklist_items_string+="\nitem "+n+":";
+                                                        checklist_items_string+="\n'-name: "+checklist_items[n].name;
+                                                        checklist_items_string+="\n'-status: "+checklist_items[n].state;
+                                                        checklist.items.push(items);
+                                                    }
+
+                                                     card.checklists.push(checklist);
+                                                }
+
+                                                var actions_route = "\nROTA DA ATIVIDADE";
+                                                
+                                                var current_list = "";
+                                                
+                                                var l = 0;
+
+
+                                                for (z=actions.length-1;z>=0;z--){
+                                                    if(actions[z].data.card != null){
+                                                        var action = {
+                                                            date: "",
+                                                            text: ""
+                                                        }
+
+                                                        if (actions[z].data.card.id.trim()==cards[i].id.trim()){
+                                                            switch(actions[z].type){
+                                                                case "createCard":
+                                                                    actions_route += "\natividade criada em "+actions[z].date;
+                                                                    actions_route += "\n------------";
+                                                                    action.date = actions[z].date;
+                                                                    action.text = "Atividade criada em "+actions[z].date;
+                                                                    card.actions.push(action);
+                                                                break;
+                                                                case "commentCard":
+                                                                    actions_route += "\n"+actions[z].idMemberCreator+" disse '"+actions[z].data.text+"' em "+actions[z].date;
+                                                                    actions_route += "\n------------";
+                                                                    action.date = actions[z].date;
+                                                                   // var memberComment = membros_obj.find(membro => membro.id.trim() == actions[z].idMemberCreator.trim());
+                                                                    action.text = "\n"+actions[z].memberCreator.fullName+" disse '"+actions[z].data.text+"' em "+actions[z].date;
+                                                                    card.actions.push(action);
+                                                                break;
+                                                                case "updateCard":
+                                                                    if (actions[z].data.list != null){
+                                                                        if (current_list != actions[z].data.list.name) {
+                                                                            actions_route += "\nmudou para status "+actions[z].data.list.name+" em "+actions[z].date;
+                                                                            actions_route += "\n------------";
+                                                                            current_list = actions[z].data.list.name;
+                                                                            action.date = actions[z].date;
+                                                                            card.actions.push(action);
+                                                                        }
+                                                                    } else {
+                                                                        if ((actions[z].data.listAfter)&&(current_list != actions[z].data.listAfter.name)){
+                                                                            actions_route += "\nmudou para status "+actions[z].data.listAfter.name+" em "+actions[z].date;
+                                                                            actions_route += "\n------------";
+                                                                            current_list = actions[z].data.listAfter.name;
+                                                                            action.date = actions[z].date;
+                                                                            action.text = "Atividade mudou de "+actions[z].data.listBefore.name+" para "+actions[z].data.listAfter.name+" em "+actions[z].date;
+                                                                            card.actions.push(action);
+                                                                        }
+                                                                    }
+                                                                break;
+                                                                case "addChecklistToCard":
+                                                                    actions_route += "\nadicionou checklist ao cartão em "+actions[z].date;
+                                                                    actions_route += "\n------------";
+                                                                    action.date = actions[z].date;
+                                                                    action.text = "Checklist adicionado ao cartão em "+actions[z].date;
+                                                                    card.actions.push(action);
+                                                                break;
+                                                            }
+                                                           
+                                                        }
+                                                    }
+                                                }
+
+                                                cards_without_member.push(card);
+
+                                         /*       alert(  "Cartão geral"+
+                                                        //"\nid: "+cards[i].id+
+                                                        // "\nresponsavel: "+JSON.stringify(cards[i].labels)+
+                                                        "\nAtividade: "+card.name+
+                                                        "\nDescrição: "+card.desc+
+                                                        "\nChecklists: "+JSON.stringify(card.checklists)+
+                                                        "\nRoteiro: "+JSON.stringify(card.actions));
+                                             //           "\n"+actions_route);
+                                             */
+                                    } 
+                    }
+
+                   
+                }
+                
+                document.getElementById('jsonfile').addEventListener('change', onChange);
+
+            }());
+        </script>
+
+        <script src="xepOnline.jqPlugin.js"></script>
+        <script src="js/html2canvas.js"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="assets/demo/chart-area-demo.js"></script>
+        <script src="assets/demo/chart-bar-demo.js"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+
+    </body>
+</html>

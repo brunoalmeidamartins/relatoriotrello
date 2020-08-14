@@ -1,0 +1,16 @@
+{
+    "posts": [
+      { "id": 1, "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit", "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pellentesque vel felis et efficitur. Morbi ac tellus a nunc lobortis rutrum a sed nulla. Cras ultricies nulla erat, non malesuada nulla cursus at. Donec sollicitudin elit sapien, eget euismod odio sollicitudin a. Maecenas lectus tortor, egestas non cursus sit amet, congue id nisl. Sed molestie purus id mauris vestibulum varius. Nam dictum ac ligula sit amet luctus. Mauris mattis, lacus vel euismod volutpat, erat purus semper libero, ut aliquam nisi metus sed nibh. Mauris ipsum arcu, volutpat at auctor at, maximus ac odio. Curabitur est sapien, fermentum non mattis vel, luctus vitae velit. Vivamus nec varius neque. Morbi eget sapien egestas, finibus est feugiat, facilisis tortor.", "imageURL": "https://conafer.org.br/wp-content/uploads/2020/08/001.jpg"},
+      { "id": 2, "title": "Pellentesque ut turpis tempus nulla lacinia ultrices in eu massa", "body": "Maecenas diam ante, venenatis non mi nec, imperdiet ultricies nisl. Mauris suscipit justo elementum, lobortis mauris et, rhoncus massa. Maecenas placerat porttitor mattis. Aenean condimentum pulvinar orci vitae facilisis. Donec eget libero eget risus dignissim maximus. Suspendisse fringilla lacinia nisl, id mattis erat finibus sit amet. Vivamus libero augue, condimentum ac diam vitae, bibendum fringilla nibh. ", "imageURL": "https://conafer.org.br/wp-content/uploads/2020/03/IMG-20200325-WA0037-800x445.jpg"},
+      { "id": 3, "title": "Integer in massa vitae ipsum viverra blandit", "body": "Pellentesque euismod felis quis quam dignissim, non varius lacus convallis. Vivamus tortor augue, facilisis a sem dictum, sagittis sodales dui. Donec eu ex laoreet, blandit nibh sed, pretium eros. Vestibulum id neque ut ligula aliquam pulvinar. Aenean hendrerit mattis risus, in interdum quam euismod a. Nam ac erat arcu. Vestibulum efficitur eros sit amet augue lacinia, nec accumsan elit placerat. Mauris sagittis augue libero, non finibus felis scelerisque et. Cras bibendum sem at ultricies egestas. Sed eget erat ante. ", "imageURL": "https://conafer.org.br/wp-content/uploads/2020/04/IMG-20200419-WA0010.jpg"},
+      { "id": 4, "title": "Aenean vel tortor et turpis dictum gravida", "body": "Donec ut tincidunt orci, vel pellentesque nulla. Nunc augue felis, cursus nec fringilla ac, faucibus et libero. Vestibulum dignissim at felis nec tincidunt. Vestibulum vel lacus porta, faucibus purus et, lobortis purus. Donec dignissim ipsum tortor, convallis hendrerit velit vulputate convallis. Proin in ligula dui. Pellentesque a scelerisque est. Curabitur eget orci in felis lacinia faucibus venenatis nec mauris. ", "imageURL": "https://conafer.org.br/wp-content/uploads/2020/05/IMG-20200515-WA0057.jpg"}
+    ],
+    "comments": [
+      { "id": 1, "profilePic": "https://i.pravatar.cc/150?img=27" ,"comment": "Nunc odio neque, maximus quis magna nec, viverra fringilla risus.", "postId": 1 },
+      { "id": 2, "profilePic": "https://i.pravatar.cc/150?img=64" ,"comment": "Vivamus imperdiet risus enim, id egestas nulla fermentum in.", "postId": 3 }
+    ],
+    "user": {
+      "username": "usuario_frontendtest",
+      "password": "supersecretpassword123"
+    }
+  }
