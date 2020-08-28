@@ -163,7 +163,7 @@
               //  $(div_card_member_body).append("<div>"+column+"</div>");
 
                 var membro_corpo_coluna = $("<div class='my-1 p-1 rounded box-shadow' id=''></div>");
-                var membro_corpo_coluna_titulo = $("<h6 class='pb-2 mb-0' style='background-color: "+column_color+"; color:white;text-align:left;padding-left: 10px;'><button id='column_"+column_id+"_member_"+i+"' onClick='deleteThisColumn("+"'"+column_id+"'","+i+")' class='btn btn-danger btn-sm x_button'>x</button>"+column_name+"</h6>");
+                var membro_corpo_coluna_titulo = $("<h6 class='pb-2 mb-0' style='background-color: "+column_color+"; color:white;text-align:left;padding-left: 10px;'><button id='column_"+column_id+"_member_"+i+"' onClick='deleteThisColumn('"+column_id+"',"+i+")' class='btn btn-danger btn-sm x_button'>x</button>"+column_name+"</h6>");
                 var membro_corpo_coluna_corpo = $("<div id=''></div>");
                  
                        
@@ -180,7 +180,7 @@
                         let description = "";
 
                         if (cards[m].description!=""){
-                            description = "<span><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_descrition' onClick='deleteThisDescription("+"'"+column_id+"'","+i+","+m+")' class='btn btn-danger btn-sm x_button'>x</button>"+cards[m].description+"</span>";
+                            description = "<span><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_descrition' onClick='deleteThisDescription('"+column_id+"',"+i+","+m+")' class='btn btn-danger btn-sm x_button'>x</button>"+cards[m].description+"</span>";
                         }
 
                         let members = ""
@@ -193,7 +193,7 @@
                             
                         }
 
-                        var membro_corpo_coluna_corpo_atividade_titulo_titulo = $("<button id='column_"+column_id+"_atv_member_"+i+"_card_"+m+"' onClick='deleteThisCard("+"'"+column_id+"'","+i+","+m+")' class='btn btn-danger btn-sm x_button'>x</button><p class='media-body pb-3 mb-0 small lh-125'><strong class='d-block' style='color:dimgrey;font-size: 16px;'>"+cards[m].name+((createDate!=false) ? " [Início em "+createDate_formated[2]+"/"+createDate_formated[1]+"/"+createDate_formated[0]+"]</strong>":"</strong>")+description+"<br/>"+members+"</p>");
+                        var membro_corpo_coluna_corpo_atividade_titulo_titulo = $("<button id='column_"+column_id+"_atv_member_"+i+"_card_"+m+"' onClick='deleteThisCard('"+column_id+"',"+i+","+m+")' class='btn btn-danger btn-sm x_button'>x</button><p class='media-body pb-3 mb-0 small lh-125'><strong class='d-block' style='color:dimgrey;font-size: 16px;'>"+cards[m].name+((createDate!=false) ? " [Início em "+createDate_formated[2]+"/"+createDate_formated[1]+"/"+createDate_formated[0]+"]</strong>":"</strong>")+description+"<br/>"+members+"</p>");
                                 
                         $(membro_corpo_coluna_corpo_atividade_titulo).append(membro_corpo_coluna_corpo_atividade_titulo_titulo);
                         $(membro_corpo_coluna_corpo_atividade).append(membro_corpo_coluna_corpo_atividade_titulo);
@@ -206,7 +206,7 @@
                               
                                 case "commentCard":
                                 
-                                var membro_corpo_coluna_corpo_atividade_roteiro_item = $("<li id='member_"+i+"_card_"+m+"_action_"+r+"'><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_action_"+r+"' onClick='deleteThisAction("+"'"+column_id+"'","+i+","+m+","+r+")' class='btn btn-danger btn-sm x_button'>x</button></li>");
+                                var membro_corpo_coluna_corpo_atividade_roteiro_item = $("<li id='member_"+i+"_card_"+m+"_action_"+r+"'><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_action_"+r+"' onClick='deleteThisAction('"+column_id+"',"+i+","+m+","+r+")' class='btn btn-danger btn-sm x_button'>x</button></li>");
 
                                 var formatDate = cards[m].actions[r].date.split("T");
                                 var formatDate_ = formatDate[0].split("-");
@@ -232,7 +232,7 @@
         
                             for (r=0;r<cards[m].checklists.length;r++){
                                 var membro_corpo_coluna_corpo_atividade_checklist = $("<ul class='events media-body small lh-125' style='margin-top: 8px;margin-bottom:0px;'></ul>");
-                                var membro_corpo_coluna_corpo_atividade_checklist_titulo = $("<li id='member_"+i+"_card_"+m+"_action_"+r+"'><b style='color:dimgrey'><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_checklist_"+r+"' onClick='deleteThisChecklist("+"'"+column_id+"'"+","+i+","+m+","+r+")' class='btn btn-danger btn-sm x_button'>x</button>> "+cards[m].checklists[r].name+"</b></li>");
+                                var membro_corpo_coluna_corpo_atividade_checklist_titulo = $("<li id='member_"+i+"_card_"+m+"_action_"+r+"'><b style='color:dimgrey'><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_checklist_"+r+"' onClick='deleteThisChecklist('"+column_id+"'"+","+i+","+m+","+r+")' class='btn btn-danger btn-sm x_button'>x</button>> "+cards[m].checklists[r].name+"</b></li>");
 
                                 $(membro_corpo_coluna_corpo_atividade_checklist).append(membro_corpo_coluna_corpo_atividade_checklist_titulo);
 
@@ -240,7 +240,7 @@
                                 
                                 for (n=0;n<cards[m].checklists[r].items.length;n++){
                                     var membro_corpo_coluna_corpo_atividade_checklist_item = $("<li id='member_"+i+"_card_"+m+"_action_"+r+"'></li>");
-                                    var membro_corpo_coluna_corpo_atividade_checklist_item_div = $("<div id='item__membro_"+i+"_atividade_"+m+"_checklist_"+r+"_item_"+n+"' class='custom-control custom-checkbox'><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_checklist_"+r+"_item_"+n+"' onClick='deleteThisChecklistItem("+"'"+column_id+"'","+i+","+m+","+r+","+n+")' class='btn btn-danger btn-sm x_button'>x</button></div>");
+                                    var membro_corpo_coluna_corpo_atividade_checklist_item_div = $("<div id='item__membro_"+i+"_atividade_"+m+"_checklist_"+r+"_item_"+n+"' class='custom-control custom-checkbox'><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_checklist_"+r+"_item_"+n+"' onClick='deleteThisChecklistItem('"+column_id+"',"+i+","+m+","+r+","+n+")' class='btn btn-danger btn-sm x_button'>x</button></div>");
                                    
                                     var membro_corpo_coluna_corpo_atividade_checklist_item_div_input;
 
@@ -270,12 +270,12 @@
                             var membro_corpo_coluna_corpo_atividade_anexos = $("<div class='col-md-4'></div>");
         
                             var membro_corpo_coluna_corpo_atividade_anexo = $("<ul class='events media-body small lh-125' style='margin-top: 8px;margin-bottom:0px;'></ul>");
-                            var membro_corpo_coluna_corpo_atividade_anexo_titulo = $("<li id='member_"+i+"_card_"+m+"_action_"+r+"'><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_attachments' onClick='deleteThisAttachments("+"'"+column_id+"'","+i+","+m+")' class='btn btn-danger btn-sm x_button'>x</button><b style='color:dimgrey'>> Anexos</b></li>");
+                            var membro_corpo_coluna_corpo_atividade_anexo_titulo = $("<li id='member_"+i+"_card_"+m+"_action_"+r+"'><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_attachments' onClick='deleteThisAttachments('"+column_id+"',"+i+","+m+")' class='btn btn-danger btn-sm x_button'>x</button><b style='color:dimgrey'>> Anexos</b></li>");
 
                             $(membro_corpo_coluna_corpo_atividade_anexo).append(membro_corpo_coluna_corpo_atividade_anexo_titulo);
                                
                             for (r=0;r<cards[m].attachments.length;r++){
-                                var membro_corpo_coluna_corpo_atividade_anexo_item = $("<li id='member_"+i+"_card_"+m+"_action_"+r+"' style='display: block'><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_anexo_"+r+"' onClick='deleteThisAttachment("+"'"+column_id+"'","+i+","+m+","+r+")' class='btn btn-danger btn-sm x_button'>x</button><a href='#"+cards[m].attachments[r].url+"'>"+cards[m].attachments[r].url+"</a></li>");
+                                var membro_corpo_coluna_corpo_atividade_anexo_item = $("<li id='member_"+i+"_card_"+m+"_action_"+r+"' style='display: block'><button id='column_"+column_id+"_member_"+i+"_card_"+m+"_anexo_"+r+"' onClick='deleteThisAttachment('"+column_id+"',"+i+","+m+","+r+")' class='btn btn-danger btn-sm x_button'>x</button><a href='#"+cards[m].attachments[r].url+"'>"+cards[m].attachments[r].url+"</a></li>");
                             
                                 $(membro_corpo_coluna_corpo_atividade_anexo).append(membro_corpo_coluna_corpo_atividade_anexo_item);
 
