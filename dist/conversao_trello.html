@@ -588,158 +588,158 @@
                             var cards = [];
 
                             for (let j=0;j<obj.cards.length;j++){
-                                
-                                if(lists[l_].id == obj.cards[j].idList){
-                                    let resultlabel = obj.cards[j].labels.filter(label => label.id == obj.labels[p].id);
+                                if(!obj.cards[j].closed)
+                                    if(lists[l_].id == obj.cards[j].idList){
+                                        let resultlabel = obj.cards[j].labels.filter(label => label.id == obj.labels[p].id);
 
-                                    if(resultlabel.length>0){
-                                    //cardsFromJson.push(obj.cards[j]);
-                                    var checklists = [];
+                                        if(resultlabel.length>0){
+                                        //cardsFromJson.push(obj.cards[j]);
+                                        var checklists = [];
 
-                                    var membersCard = [];
-                                    
-                                    for(let m=0;m<obj.cards[j].idMembers.length;m++) {
-                                        for(let n=0;n<members.length;n++){
-                                            if(obj.cards[j].idMembers[m]==members[n].id){
-                                                let member = {
-                                                    id: members[n].id,
-                                                    name: members[n].name
-                                                }
-                                                membersCard.push(member);
-                                            }
-                                        }
-                                    }
-
-                                    for (let x=0;x<obj.cards[j].idChecklists.length;x++){
-                                        var result = obj.checklists.find(checklist => checklist.id == obj.cards[j].idChecklists[x]);
+                                        var membersCard = [];
                                         
-                                        if(result!=undefined){
-                                            if(result.checkItems.length>0){
-                                                var checkItems = [];
-                                                for(let m=0;m<result.checkItems.length;m++){
-                                                    var checkitemtemp = {
-                                                        state: result.checkItems[m].state,
-                                                        name: result.checkItems[m].name
+                                        for(let m=0;m<obj.cards[j].idMembers.length;m++) {
+                                            for(let n=0;n<members.length;n++){
+                                                if(obj.cards[j].idMembers[m]==members[n].id){
+                                                    let member = {
+                                                        id: members[n].id,
+                                                        name: members[n].name
                                                     }
-                                                    checkItems.push(checkitemtemp);
+                                                    membersCard.push(member);
                                                 }
                                             }
                                         }
-                                        checklists.push({name:result.name,items: checkItems});
-                                    }
-                                    var actions_route = "\nROTA DA ATIVIDADE";
-                                    var current_list = "";
-                                    var actions = [];
-                                    //actions aqui
-                                    var actionsForThisCard = obj.actions.filter(action => (action.data.card!=undefined) ? (action.data.card.id == obj.cards[j].id) : undefined);
-                                    for (let g=actionsForThisCard.length-1;g>=0;g--){
-                                            if(actionsForThisCard[g].data.card != null){
-                                                var action = {
-                                                    date: "",
-                                                    text: "",
-                                                    type: "",
-                                                    currentList: ""
-                                                }
 
-                                                    switch(actionsForThisCard[g].type){
-                                                        case "createCard":
-                                                            actions_route += "\natividade criada em "+actionsForThisCard[g].date;
-                                                            actions_route += "\n------------";
-                                                            action.date = actionsForThisCard[g].date;
-                                                            action.text = "Foi criada";
-                                                            action.type = "createCard";
-                                                            actions.push(action);
-                                                        break;
-                                                        case "commentCard":
-                                                            actions_route += "\n"+actionsForThisCard[g].idMemberCreator+" disse '"+actionsForThisCard[g].data.text+"' em "+actionsForThisCard[g].date;
-                                                            actions_route += "\n------------";
-                                                            action.date = actionsForThisCard[g].date;
-                                                        // var memberComment = membros_obj.find(membro => membro.id.trim() == actionsForThisCard[g].idMemberCreator.trim());
-                                                            action.text = "\n"+actionsForThisCard[g].memberCreator.fullName+" disse '"+actionsForThisCard[g].data.text+"'";
-                                                            action.type = "commentCard";
-                                                            actions.push(action);
-                                                        break;
-                                                        case "updateCard":
-                                                            if (actionsForThisCard[g].data.list != null){
-                                                                if (current_list != actionsForThisCard[g].data.list.name) {
-                                                                    actions_route += "\nmudou para status "+actionsForThisCard[g].data.list.name+" em "+actionsForThisCard[g].date;
-                                                                    actions_route += "\n------------";
-                                                                    current_list = actionsForThisCard[g].data.list.name;
-                                                                    action.currentList = current_list;
-                                                                    action.date = actionsForThisCard[g].date;
-                                                                    action.type = "updateCard";
-                                                                    actions.push(action);
-                                                                }
-                                                            } else {
-                                                                if ((actionsForThisCard[g].data.listAfter)&&(current_list != actionsForThisCard[g].data.listAfter.name)){
-                                                                    actions_route += "\nmudou para status "+actionsForThisCard[g].data.listAfter.name+" em "+actionsForThisCard[g].date;
-                                                                    actions_route += "\n------------";
-                                                                    current_list = actionsForThisCard[g].data.listAfter.name;
-                                                                    action.date = actionsForThisCard[g].date;
-                                                                    action.type = "updateCard";
-                                                                    var listafter = "";
-                                                                    var listbefore = "";
-
-                                                                    switch(actionsForThisCard[g].data.listAfter.name){
-                                                                        case "CONCLUÍDO":
-                                                                            listafter="<p style='color:#118000;display:inline;'>"+actionsForThisCard[g].data.listAfter.name+"</p>";
-                                                                            break;
-                                                                        case "Caixa de Gelo":
-                                                                            listafter="<p style='color:#0080ab;display:inline;'>"+actionsForThisCard[g].data.listAfter.name+"</p>";
-                                                                            break;
-                                                                        default:
-                                                                            listafter=actionsForThisCard[g].data.listAfter.name;
-                                                                            break;
-                                                                    }
-
-                                                                    switch(actionsForThisCard[g].data.listBefore.name){
-                                                                        case "CONCLUÍDO":
-                                                                            listbefore="<p style='color:#118000;display:inline;'>"+actionsForThisCard[g].data.listBefore.name+"</p>";
-                                                                            break;
-                                                                        case "Caixa de Gelo":
-                                                                            listbefore="<p style='color:#0080ab;display:inline;'>"+actionsForThisCard[g].data.listBefore.name+"</p>";
-                                                                            break;
-                                                                        default:
-                                                                            listbefore=actionsForThisCard[g].data.listBefore.name;
-                                                                            break;
-                                                                    }
-
-                                                                    action.currentList = current_list;
-                                                                    action.text = "Atividade mudou de "+listbefore+" para "+listafter;
-                                                                    action.type = "updateCard";
-                                                                    actions.push(action);
-                                                                }
-                                                            }
-                                                            
-                                                        break;
-                                                        case "addChecklistToCard":
-                                                            actions_route += "\nadicionou checklist ao cartão";
-                                                            actions_route += "\n------------";
-                                                            action.date = actionsForThisCard[g].date;
-                                                            action.text = "Checklist '"+actionsForThisCard[g].data.checklist.name+"' adicionado ao cartão";
-                                                            action.type = "addChecklistToCard";
-                                                            card.actions.push(action);
-                                                        break;
+                                        for (let x=0;x<obj.cards[j].idChecklists.length;x++){
+                                            var result = obj.checklists.find(checklist => checklist.id == obj.cards[j].idChecklists[x]);
+                                            
+                                            if(result!=undefined){
+                                                if(result.checkItems.length>0){
+                                                    var checkItems = [];
+                                                    for(let m=0;m<result.checkItems.length;m++){
+                                                        var checkitemtemp = {
+                                                            state: result.checkItems[m].state,
+                                                            name: result.checkItems[m].name
+                                                        }
+                                                        checkItems.push(checkitemtemp);
                                                     }
-                                                
+                                                }
                                             }
-                                    }
+                                            checklists.push({name:result.name,items: checkItems});
+                                        }
+                                        var actions_route = "\nROTA DA ATIVIDADE";
+                                        var current_list = "";
+                                        var actions = [];
+                                        //actions aqui
+                                        var actionsForThisCard = obj.actions.filter(action => (action.data.card!=undefined) ? (action.data.card.id == obj.cards[j].id) : undefined);
+                                        for (let g=actionsForThisCard.length-1;g>=0;g--){
+                                                if(actionsForThisCard[g].data.card != null){
+                                                    var action = {
+                                                        date: "",
+                                                        text: "",
+                                                        type: "",
+                                                        currentList: ""
+                                                    }
 
-                                    var card = {
-                                        name: obj.cards[j].name,
-                                        list: (lists.find(list => list.id == obj.cards[j].idList)!=undefined) ? lists.find(list => list.id == obj.cards[j].idList).name : null,
-                                        checklists: checklists,
-                                        labels: obj.cards[j].labels,
-                                        dateLastActivity: obj.cards[j].dateLastActivity,
-                                        actions: actions,
-                                        members: membersCard,
-                                        attachments: obj.cards[j].attachments,
-                                        description: obj.cards[j].desc
-                                    }
+                                                        switch(actionsForThisCard[g].type){
+                                                            case "createCard":
+                                                                actions_route += "\natividade criada em "+actionsForThisCard[g].date;
+                                                                actions_route += "\n------------";
+                                                                action.date = actionsForThisCard[g].date;
+                                                                action.text = "Foi criada";
+                                                                action.type = "createCard";
+                                                                actions.push(action);
+                                                            break;
+                                                            case "commentCard":
+                                                                actions_route += "\n"+actionsForThisCard[g].idMemberCreator+" disse '"+actionsForThisCard[g].data.text+"' em "+actionsForThisCard[g].date;
+                                                                actions_route += "\n------------";
+                                                                action.date = actionsForThisCard[g].date;
+                                                            // var memberComment = membros_obj.find(membro => membro.id.trim() == actionsForThisCard[g].idMemberCreator.trim());
+                                                                action.text = "\n"+actionsForThisCard[g].memberCreator.fullName+" disse '"+actionsForThisCard[g].data.text+"'";
+                                                                action.type = "commentCard";
+                                                                actions.push(action);
+                                                            break;
+                                                            case "updateCard":
+                                                                if (actionsForThisCard[g].data.list != null){
+                                                                    if (current_list != actionsForThisCard[g].data.list.name) {
+                                                                        actions_route += "\nmudou para status "+actionsForThisCard[g].data.list.name+" em "+actionsForThisCard[g].date;
+                                                                        actions_route += "\n------------";
+                                                                        current_list = actionsForThisCard[g].data.list.name;
+                                                                        action.currentList = current_list;
+                                                                        action.date = actionsForThisCard[g].date;
+                                                                        action.type = "updateCard";
+                                                                        actions.push(action);
+                                                                    }
+                                                                } else {
+                                                                    if ((actionsForThisCard[g].data.listAfter)&&(current_list != actionsForThisCard[g].data.listAfter.name)){
+                                                                        actions_route += "\nmudou para status "+actionsForThisCard[g].data.listAfter.name+" em "+actionsForThisCard[g].date;
+                                                                        actions_route += "\n------------";
+                                                                        current_list = actionsForThisCard[g].data.listAfter.name;
+                                                                        action.date = actionsForThisCard[g].date;
+                                                                        action.type = "updateCard";
+                                                                        var listafter = "";
+                                                                        var listbefore = "";
 
-                                    cards.push(card)
+                                                                        switch(actionsForThisCard[g].data.listAfter.name){
+                                                                            case "CONCLUÍDO":
+                                                                                listafter="<p style='color:#118000;display:inline;'>"+actionsForThisCard[g].data.listAfter.name+"</p>";
+                                                                                break;
+                                                                            case "Caixa de Gelo":
+                                                                                listafter="<p style='color:#0080ab;display:inline;'>"+actionsForThisCard[g].data.listAfter.name+"</p>";
+                                                                                break;
+                                                                            default:
+                                                                                listafter=actionsForThisCard[g].data.listAfter.name;
+                                                                                break;
+                                                                        }
+
+                                                                        switch(actionsForThisCard[g].data.listBefore.name){
+                                                                            case "CONCLUÍDO":
+                                                                                listbefore="<p style='color:#118000;display:inline;'>"+actionsForThisCard[g].data.listBefore.name+"</p>";
+                                                                                break;
+                                                                            case "Caixa de Gelo":
+                                                                                listbefore="<p style='color:#0080ab;display:inline;'>"+actionsForThisCard[g].data.listBefore.name+"</p>";
+                                                                                break;
+                                                                            default:
+                                                                                listbefore=actionsForThisCard[g].data.listBefore.name;
+                                                                                break;
+                                                                        }
+
+                                                                        action.currentList = current_list;
+                                                                        action.text = "Atividade mudou de "+listbefore+" para "+listafter;
+                                                                        action.type = "updateCard";
+                                                                        actions.push(action);
+                                                                    }
+                                                                }
+                                                                
+                                                            break;
+                                                            case "addChecklistToCard":
+                                                                actions_route += "\nadicionou checklist ao cartão";
+                                                                actions_route += "\n------------";
+                                                                action.date = actionsForThisCard[g].date;
+                                                                action.text = "Checklist '"+actionsForThisCard[g].data.checklist.name+"' adicionado ao cartão";
+                                                                action.type = "addChecklistToCard";
+                                                                card.actions.push(action);
+                                                            break;
+                                                        }
+                                                    
+                                                }
+                                        }
+
+                                        var card = {
+                                            name: obj.cards[j].name,
+                                            list: (lists.find(list => list.id == obj.cards[j].idList)!=undefined) ? lists.find(list => list.id == obj.cards[j].idList).name : null,
+                                            checklists: checklists,
+                                            labels: obj.cards[j].labels,
+                                            dateLastActivity: obj.cards[j].dateLastActivity,
+                                            actions: actions,
+                                            members: membersCard,
+                                            attachments: obj.cards[j].attachments,
+                                            description: obj.cards[j].desc
+                                        }
+
+                                        cards.push(card)
+                                        }
                                     }
-                                }
                             }
                             cardPerList.push({
                                 listName: lists[l_].name,
